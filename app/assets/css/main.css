@@ -1,0 +1,97 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme {
+	--font-sans: 'Onest', sans-serif;
+
+	--breakpoint-3xl: 1920px;
+
+	--breakpoint-sm: 540px;
+
+	--container-8xl: 95vw;
+
+	/* #DE9F51 */
+	--color-emerald-50: #fdf8f0;
+	--color-emerald-100: #fbeacc;
+	--color-emerald-200: #f6d599;
+	--color-emerald-300: #eaba5e;
+	--color-emerald-400: #de9f51;
+	--color-emerald-500: #b87814;
+	--color-emerald-600: #94600d;
+	--color-emerald-700: #76500f;
+	--color-emerald-800: #5e4111;
+	--color-emerald-900: #4e3413;
+
+	--color-zinc-50: #f2f2f2;
+	--color-zinc-100: #d9d9d9;
+	--color-zinc-200: #bfbfbf;
+	--color-zinc-300: #999999;
+	--color-zinc-400: #7a7a7a;
+	--color-zinc-500: #5c5c5c;
+	--color-zinc-600: #444444;
+	--color-zinc-700: #2f2f2f;
+	--color-zinc-800: #1a1a1a;
+	--color-zinc-900: #0f0f0f;
+}
+
+@layer base {
+	:root {
+		--ui-container: var(--container-8xl);
+		--ui-primary: var(--ui-color-primary-400);
+		--ui-bg: white;
+		--ui-bg-elevated: var(--ui-color-neutral-300);
+	}
+
+	.dark {
+		--ui-primary: var(--ui-color-primary-500);
+		--ui-bg: var(--ui-color-neutral-900);
+		--ui-bg-elevated: var(--ui-color-neutral-700);
+	}
+	html,
+	body {
+		min-width: 320px;
+		background-color: #c0c0c0;
+	}
+}
+
+@layer utilities {
+	.pointer-events-none {
+		pointer-events: none;
+	}
+	.visibility-hidden {
+		visibility: hidden;
+	}
+
+	.focus\:outline:focus {
+		outline-width: 1px;
+	}
+
+	.l-wrapper {
+		max-width: 768px;
+		margin: 0 auto;
+		width: 100%;
+		padding: 0 16px;
+	}
+
+	@media (width >= 40rem) {
+		@media (hover: hover) {
+			.sm\:hover\:opacity-100:hover {
+				opacity: 100%;
+			}
+		}
+	}
+
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity 0.5s ease;
+	}
+
+	.fade-enter-from,
+	.fade-leave-to {
+		opacity: 0;
+	}
+}
+
+.l-header {
+	margin-bottom: 40px;
+}
