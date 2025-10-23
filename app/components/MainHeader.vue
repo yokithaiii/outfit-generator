@@ -1,50 +1,47 @@
 <script setup lang="ts">
-import { useModalStore } from '~/composables/useModalStore'
-import {
-	ItemsModal,
-	ModelModal,
-	HelpModal
-} from '#components';
+import type { NavigationMenuItem } from '@nuxt/ui'
 
-const openModal = (type: 'items' | 'model' | 'help') => {
-	useModalStore().openModal(type);
-};
+const route = useRoute()
+
+const items = computed<NavigationMenuItem[]>(() => [
+  {
+    label: 'Home',
+    to: '/',
+    active: route.path === '/'
+  },
+  {
+    label: 'Items',
+    to: '/items',
+    active: route.path.startsWith('/items')
+  },
+  {
+    label: 'Models',
+    to: '/models',
+    active: route.path.startsWith('/models')
+  },
+  {
+    label: 'Help',
+    to: '/help',
+    active: route.path.startsWith('/help')
+  },
+  {
+    label: 'User',
+    to: '/user',
+    active: route.path.startsWith('/user')
+  },
+])
 </script>
 
 <template>
-  <header>
-    <div class="title-bar">
-      <div class="title-bar-text">Outfit Generator</div>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize"></button>
-        <button aria-label="Restore"></button>
-        <button aria-label="Close"></button>
-      </div>
-    </div>
+  <UHeader title="Nuxt UI">
 
-    <UContainer>
-      <div class="flex align-center gap-3 mt-4">
-        <a class="underline text-[#222]" @click="openModal('items')">
-          Items
-        </a>
-        <a class="underline text-[#222]" @click="openModal('model')">
-          Model
-        </a>
-        <a class="underline text-[#222]" @click="openModal('help')">
-          Help
-        </a>
-      </div>
-    </UContainer>
-  </header>
+    <UNavigationMenu :items="items" />
+
+    <template #right>
+      <UColorModeButton />
+    </template>
+  </UHeader>
 </template>
 
 <style scoped>
-a {
-  cursor: pointer;
-  font-size: 12px;
-  color: #222;
-}
-a:hover {
-  text-decoration: underline;
-}
 </style>

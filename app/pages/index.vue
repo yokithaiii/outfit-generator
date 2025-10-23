@@ -2,29 +2,32 @@
 import { GoogleGenAI } from '@google/genai'
 import { computed } from 'vue'
 
-const configEnv = useRuntimeConfig()
-
-const modelImage = ref<File | null>(null)
-const topImage = ref<File | null>(null)
-const bottomImage = ref<File | null>(null)
-const shoesImage = ref<File | null>(null)
 const generatedImage = ref<string | null>(null)
 const loading = ref(false)
 
 const tops = ref([
 	'/img/tshirt.jpg',
-	'/img/tshirt2.jpg'
+	'/img/tshirt2.jpg',
+	'/img/jacket.webp',
+	'/img/psycho.jpeg',
+	'/img/dress.jpg',
+	'/img/dress2.jpg',
+	'/img/dress3.jpg',
+	'/img/dress4.jpg',
 ])
 
 const bottoms = ref([
 	'/img/pants.jpg',
-	'/img/pants2.jpg'
+	'/img/pants2.jpg',
+	'/img/pants3.jpg'
 ])
 
 const shoes = ref([
 	'/img/shoes.jpg',
 	'/img/shoes2.jpg'
 ])
+
+const model = ref('/img/model3.jpg')
 
 const currentTopIndex = ref(0)
 const currentBottomIndex = ref(0)
@@ -44,7 +47,7 @@ const prevImage = (array: string[], index: number): number => {
 
 
 const generateOutfit = async () => {
-	const modelUrl = '/img/model-women.jpg'
+	const modelUrl = model.value
 	const topUrl = topSrc.value
 	const bottomUrl = bottomSrc.value
 	const shoesUrl = shoesSrc.value
@@ -96,43 +99,6 @@ const generateOutfit = async () => {
 	} finally {
 		loading.value = false
 	}
-
-	// try {
-	// 	const ai = new GoogleGenAI({
-	// 		apiKey: configEnv.public.GEMINI_API_KEY,
-	// 	})
-
-	// 	const model = 'gemini-2.5-flash-image-preview'
-
-	// 	const modelBase64 = await fileToBase64(modelImage.value)
-	// 	const topBase64 = await fileToBase64(topImage.value)
-	// 	const bottomBase64 = await fileToBase64(bottomImage.value)
-
-	// 	const prompt = [
-	// 		{ text: 'Create a new image by combining the elements from the provided images. Take the top clothing item from image 1 and the bottom clothing item from image 2, and place them naturally onto the body in image 3 so it looks like the person is wearing the selected outfit. Fit to body shape and pose, preserve garment proportions and textures, match lighting and shadows, handle occlusion by hair and arms. CRITICAL: The background must be completely white (#FFFFFF) - do not use black, transparent, or any other background color. Replace any existing background with solid white. Do not change the person identity or add accessories.' },
-	// 		{ inlineData: { mimeType: "image/png", data: modelBase64.split(',')[1]} }, // image 1 model
-	// 		{ inlineData: { mimeType: "image/png", data: topBase64.split(',')[1]} }, // image 2 top
-	// 		{ inlineData: { mimeType: "image/png", data: bottomBase64.split(',')[1]} }, // image 3 bottom
-	// 	];
-
-	// 	console.log('Contents prepared for generation.', prompt)
-
-	// 	const response = await ai.models.generateContent({
-	// 		model: model,
-	// 		contents: prompt,
-	// 	})
-
-	// 	const part = response.candidates?.[0]?.content?.parts?.[0]
-	// 	if (part && part.inlineData) {
-	// 		generatedImage.value = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`
-	// 	}
-
-	// } catch (error) {
-	// 	console.error('Error generating outfit:', error)
-	// 	alert('Error generating outfit')
-	// } finally {
-	// 	loading.value = false
-	// }
 }
 
 const urlToBase64 = async (url: string): Promise<string> => {
@@ -196,64 +162,79 @@ const shoesSrc = computed(() => shoes.value[currentShoesIndex.value] ?? '')
 
 <template>
 	<div class="h-full pb-[40px]">
-		{{ }}
 		<div class="flex flex-col align-center gap-2 w-full h-[100%]">
 			<div class="l-left w-full">
 				<div class="l-grid flex flex-col align-center justify-center gap-2 w-full h-full">
-					<fieldset class="w-full">
-						<legend>Tops</legend>
-						<div class="field-row flex flex-col gap-2">
-							<div class="field-border w-full h-[150px]" style="padding: 8px">
-								<img :src="topSrc" alt="" class="w-full h-full object-contain">
-							</div>
-							<div class="flex align-center gap-2">
-								<button class="default"
-									@click="currentTopIndex = prevImage(tops, currentTopIndex)">Пред.</button>
-								<button class="default"
-									@click="currentTopIndex = nextImage(tops, currentTopIndex)">След.</button>
-							</div>
-						</div>
-					</fieldset>
+					<UCard>
+						<template #header>
+							<span>Tops</span>
+						</template>
 
-					<fieldset>
-						<legend>Bottoms</legend>
-						<div class="field-row flex flex-col gap-2">
-							<div class="field-border w-full h-[150px]" style="padding: 8px">
-								<img :src="bottomSrc" alt="" class="w-full h-full object-contain">
-							</div>
-							<div class="flex align-center gap-2">
-								<button class="default"
-									@click="currentBottomIndex = prevImage(bottoms, currentBottomIndex)">Пред.</button>
-								<button class="default"
-									@click="currentBottomIndex = nextImage(bottoms, currentBottomIndex)">След.</button>
-							</div>
+						<div class="field-border w-full h-[150px]">
+							<img :src="topSrc" alt="" class="w-full h-full object-contain">
 						</div>
-					</fieldset>
+						
+						<template #footer>
+							<div class="flex align-center gap-2 justify-between">
+								<button @click="currentTopIndex = prevImage(tops, currentTopIndex)"	class="cursor-pointer">
+									<UIcon name="ant-design:arrow-left-outlined" class="size-5" />
+								</button>
+								<button @click="currentTopIndex = nextImage(tops, currentTopIndex)" class="cursor-pointer">
+									<UIcon name="ant-design:arrow-right-outlined" class="size-5" />
+								</button>
+							</div>
+						</template>
+					</UCard>
+					<UCard>
+						<template #header>
+							<span>Bottoms</span>
+						</template>
 
-					<fieldset>
-						<legend>Shoes</legend>
-						<div class="field-row flex flex-col gap-2">
-							<div class="field-border w-full h-[150px]" style="padding: 8px">
-								<img :src="shoesSrc" alt="" class="w-full h-full object-contain">
-							</div>
-							<div class="flex align-center gap-2">
-								<button class="default"
-									@click="currentShoesIndex = prevImage(shoes, currentShoesIndex)">Пред.</button>
-								<button class="default"
-									@click="currentShoesIndex = nextImage(shoes, currentShoesIndex)">След.</button>
-							</div>
+						<div class="field-border w-full h-[150px]">
+							<img :src="bottomSrc" alt="" class="w-full h-full object-contain">
 						</div>
-					</fieldset>
+						
+						<template #footer>
+							<div class="flex align-center gap-2 justify-between">
+								<button @click="currentBottomIndex = prevImage(bottoms, currentBottomIndex)" class="cursor-pointer">
+									<UIcon name="ant-design:arrow-left-outlined" class="size-5" />
+								</button>
+								<button @click="currentBottomIndex = nextImage(bottoms, currentBottomIndex)" class="cursor-pointer">
+									<UIcon name="ant-design:arrow-right-outlined" class="size-5" />
+								</button>
+							</div>
+						</template>
+					</UCard>
+					<UCard>
+						<template #header>
+							<span>Shoes</span>
+						</template>
+
+						<div class="field-border w-full h-[150px]">
+							<img :src="shoesSrc" alt="" class="w-full h-full object-contain">
+						</div>
+						
+						<template #footer>
+							<div class="flex align-center gap-2 justify-between">
+								<button @click="currentShoesIndex = prevImage(shoes, currentShoesIndex)" class="cursor-pointer">
+									<UIcon name="ant-design:arrow-left-outlined" class="size-5" />
+								</button>
+								<button @click="currentShoesIndex = nextImage(shoes, currentShoesIndex)" class="cursor-pointer">
+									<UIcon name="ant-design:arrow-right-outlined" class="size-5" />
+								</button>
+							</div>
+						</template>
+					</UCard>
 				</div>
 			</div>
 
-			<div class="l-right w-full">
-				<div class="flex flex-col align-center justify-start w-full h-full">
-					<button class="default mb-2 h-[60px] cursor-pointer" :disabled="loading" @click="generateOutfit">
+			<div class="l-right w-full mt-4">
+				<div class="flex flex-col items-center justify-center w-full h-full gap-4">
+					<UButton icon="i-lucide-rocket" size="md" color="primary" variant="solid" class="w-[200px] justify-center cursor-pointer" :disabled="loading" @click="generateOutfit">
 						{{ loading ? 'Генерация...' : 'Сгенерировать' }}
-					</button>
-					<div class="field-border w-full h-auto" style="padding: 8px">
-						<img src="/img/model-women.jpg" alt="" class="w-full h-[400px] object-contain">
+					</UButton>
+					<div class="field-border w-full h-auto">
+						<img :src="model" alt="" class="w-full h-[400px] object-contain">
 					</div>
 				</div>
 			</div>
@@ -267,25 +248,4 @@ const shoesSrc = computed(() => shoes.value[currentShoesIndex.value] ?? '')
 </template>
 
 <style scoped>
-fieldset {
-	padding: 15px;
-	border-width: 2px;
-	border-style: groove;
-	border-color: threedface;
-}
-
-button {
-	cursor: pointer;
-}
-
-.l-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-}
-
-@media screen and (max-width: 600px) {
-	.l-grid {
-		grid-template-columns: 1fr 1fr;
-	}
-}
 </style>

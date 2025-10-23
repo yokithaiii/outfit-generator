@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  compatibilityDate: '2025-10-23',
   modules: [
     '@nuxt/ui',
     '@nuxt/image',

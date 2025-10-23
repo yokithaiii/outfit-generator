@@ -2,12 +2,11 @@
 </script>
 
 <template>
-	<main-header></main-header>
 	<UContainer>
-		<main class="mt-2">
+		<main-header></main-header>
+		<main class="mt-6">
 			<slot></slot>
 		</main>
-		// footer
 	</UContainer>
 </template>
 

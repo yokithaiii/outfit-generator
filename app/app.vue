@@ -7,5 +7,5 @@
 </template>
 
 <script setup lang="ts">
-import "98.css";
+// import "98.css";
 </script>
