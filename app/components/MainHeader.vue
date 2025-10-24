@@ -33,9 +33,9 @@ const items = computed<NavigationMenuItem[]>(() => [
 </script>
 
 <template>
-  <UHeader title="Nuxt UI">
+  <UHeader title="Outfit generator">
 
-    <UNavigationMenu :items="items" />
+    <UNavigationMenu :items="items"/>
 
     <template #right>
       <UColorModeButton />
@@ -44,4 +44,5 @@ const items = computed<NavigationMenuItem[]>(() => [
 </template>
 
 <style scoped>
+
 </style>

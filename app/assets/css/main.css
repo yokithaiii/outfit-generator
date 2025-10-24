@@ -2,36 +2,29 @@
 @import '@nuxt/ui';
 
 @theme {
-	--font-sans: 'Onest', sans-serif;
+	--font-sans: 'Futura PT', sans-serif;
 
 	--breakpoint-3xl: 1920px;
 
 	--breakpoint-sm: 540px;
 
 	--container-8xl: 95vw;
+}
 
-	/* #DE9F51 */
-	--color-emerald-50: #fdf8f0;
-	--color-emerald-100: #fbeacc;
-	--color-emerald-200: #f6d599;
-	--color-emerald-300: #eaba5e;
-	--color-emerald-400: #de9f51;
-	--color-emerald-500: #b87814;
-	--color-emerald-600: #94600d;
-	--color-emerald-700: #76500f;
-	--color-emerald-800: #5e4111;
-	--color-emerald-900: #4e3413;
+@font-face {
+	font-family: 'Futura PT';
+	src: url('@/assets/fonts/FuturaPT-Book.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
 
-	--color-zinc-50: #f2f2f2;
-	--color-zinc-100: #d9d9d9;
-	--color-zinc-200: #bfbfbf;
-	--color-zinc-300: #999999;
-	--color-zinc-400: #7a7a7a;
-	--color-zinc-500: #5c5c5c;
-	--color-zinc-600: #444444;
-	--color-zinc-700: #2f2f2f;
-	--color-zinc-800: #1a1a1a;
-	--color-zinc-900: #0f0f0f;
+@font-face {
+	font-family: 'Futura PT';
+	src: url('@/assets/fonts/FuturaPT-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
 }
 
 @layer base {
