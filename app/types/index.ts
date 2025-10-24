@@ -45,11 +45,23 @@ export interface AuthResponse {
 export interface Item {
 	id: string
 	image_url: string
-	type: 'top' | 'bottom' | 'shoes' | 'full'
+	type: ItemTypes
 }
+
+export type ItemTypes = 
+	'head' 
+	| 'top'
+  	| 'outwear'
+  	| 'bottom'
+  	| 'foot'
+  	| 'full'
+  	| 'bag'
+  	| 'jewelry'
+  	| 'accessory'
 
 export interface Props {
 	label: string
-	type: 'top' | 'bottom' | 'shoes' | 'full'
-	items: Item[]
+	type: ItemTypes
+	items: Item[],
+	loading: boolean
 }

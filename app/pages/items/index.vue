@@ -2,25 +2,59 @@
 import { onMounted, computed } from 'vue'
 import CategoryItems from '@/components/CategoryItems.vue'
 import { useItems } from '@/composables/useItems'
+import type { Item, ItemTypes } from '@/types'
 
-const { items, loading, fetchItems } = useItems()
+const categoryLabels: Record<ItemTypes, string> = {
+	head: 'Head',
+	top: 'Tops',
+	outwear: 'Outerwear',
+	bottom: 'Bottoms',
+	foot: 'Shoes',
+	full: 'Fulls',
+	bag: 'Bags',
+	jewelry: 'Jewelry',
+	accessory: 'Accessories',
+}
+
+const { items, fetchItems, loading } = useItems()
 
 onMounted(fetchItems)
 
-const tops = computed(() => items.value?.filter(i => i.type === 'top') ?? [])
-const bottoms = computed(() => items.value?.filter(i => i.type === 'bottom') ?? [])
-const shoes = computed(() => items.value?.filter(i => i.type === 'shoes') ?? [])
-const full = computed(() => items.value?.filter(i => i.type === 'full') ?? [])
+const categories = Object.entries(categoryLabels).map(([type, label]) => ({
+	label,
+	type: type as ItemTypes,
+}))
+
+const categorizedItems = computed(() => {
+	const map: Record<ItemTypes, Item[]> = {
+		head: [],
+		top: [],
+		outwear: [],
+		bottom: [],
+		foot: [],
+		full: [],
+		bag: [],
+		jewelry: [],
+		accessory: [],
+	}
+
+	items.value?.forEach((i) => {
+		if (map[i.type]) map[i.type].push(i)
+	})
+
+  	return map
+})
 </script>
 
 <template>
-  <div class="h-full pb-[40px]">
-    <div v-if="loading" class="text-center py-10 text-gray-500">Загрузка...</div>
-    <div v-else>
-      <CategoryItems label="Tops" type="top" :items="tops" />
-      <CategoryItems label="Bottoms" type="bottom" :items="bottoms" />
-      <CategoryItems label="Shoes" type="shoes" :items="shoes" />
-      <CategoryItems label="Fulls" type="full" :items="full" />
-    </div>
-  </div>
+	<div class="h-full pb-[40px]">
+		<CategoryItems
+			v-for="category in categories"
+			:key="category.type"
+			:label="`${category.label} (${categorizedItems[category.type]?.length || 0})`"
+			:type="category.type"
+			:items="categorizedItems[category.type]"
+			:loading="loading"
+		/>
+	</div>
 </template>

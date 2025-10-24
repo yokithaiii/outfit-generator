@@ -3,7 +3,7 @@ import type { Item } from '@/types/index'
 
 export function useItems() {
     const items = ref<Item[]>([])
-    const loading = ref(true)
+    const loading = ref(false)
     const error = ref<string | null>(null)
 
     const API_BASE = 'http://localhost:8000/api'
@@ -11,6 +11,7 @@ export function useItems() {
     async function fetchItems(): Promise<Item[]> {
         loading.value = true
         error.value = null
+
         try {
             const res = await fetch(`${API_BASE}/items`)
             if (!res.ok) { 
@@ -19,12 +20,13 @@ export function useItems() {
             
             const json = await res.json()
             items.value = json.data
+            return items.value
         } catch (err: any) {
             error.value = err.message
             console.error(err)
+            return []
         } finally {
             loading.value = false
-            return []
         }
     }
 
@@ -78,6 +80,7 @@ export function useItems() {
             throw new Error('Failed to delete item')
         }
 
+        items.value = items.value.filter(i => i.id !== id)
         return res
     }
 
