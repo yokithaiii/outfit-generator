@@ -48,6 +48,7 @@ const categorizedItems = computed(() => {
 
 <template>
 	<div class="h-full pb-[40px]">
+        <h1 class="text-center">YOUR ITEMS</h1>
 		<CategoryItems
 			v-for="category in categories"
 			:key="category.type"
